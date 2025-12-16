@@ -4,7 +4,7 @@ const config = {
   // MongoDB配置
   mongodb: {
     uri: process.env.MONGODB_URI,
-    database: process.env.DATABASE_NAME || 'donation_system',
+    database: process.env.DATABASE_NAME || 'homework_db',
     options: {
       serverApi: {
         version: '1',
