@@ -97,7 +97,7 @@ app.get('/manage', (req, res) => {
 
 // 立即加载路由，避免延迟
 const routes = require('./routes');
-app.use('/api', routes); // 先注册API路由
+app.use('/api/vi', routes); // 先注册API路由
 app.use(express.static(path.join(__dirname, '../public'))); // 后注册静态文件服务
 console.log('✅ 路由已加载');
 
