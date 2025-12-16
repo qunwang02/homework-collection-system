@@ -37,13 +37,28 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
-// 速率限制
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: '请求过于频繁，请稍后再试'
+  windowMs: 15 * 60 * 1000, // 15分钟
+  max: 100, // 每个IP限制100个请求
+  message: { 
+    success: false, 
+    error: '请求过于频繁，请稍后再试' 
+  },
+  standardHeaders: true, // 返回标准的 `RateLimit-*` 头部信息
+  legacyHeaders: false, // 不返回 `X-RateLimit-*` 头部信息
+  // 🔐 关键修复：明确信任代理，并配置如何获取真实IP
+  trustProxy: 1, // 信任第一层代理（Render平台通常只有一层）
+  keyGenerator: (req, res) => {
+    // 优先从 `X-Forwarded-For` 头部获取IP，这是代理传递的真实客户端IP
+    // 如果头部不存在，则回退到连接远程地址
+    const forwardedFor = req.headers['x-forwarded-for'];
+    if (forwardedFor) {
+      // `X-Forwarded-For` 格式可能是 "client, proxy1, proxy2"，取第一个IP
+      return forwardedFor.split(',')[0].trim();
+    }
+    return req.socket.remoteAddress; // 备用方案
+  }
 });
-app.use('/api/', limiter);
 
 // 静态文件服务
 app.use(express.static(path.join(__dirname, '../public')));
