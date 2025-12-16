@@ -7,6 +7,10 @@ const rateLimit = require('express-rate-limit');
 const database = require('./database'); // 立即导入
 
 const app = express();
+const homeworkRoutes = require('./routes'); // 使用更清晰的命名
+
+app.use('/api', homeworkRoutes); // 使用/api前缀
+
 
 // 或者对于Render平台，建议使用：
 app.set('trust proxy', true); // 最简单有效
@@ -75,6 +79,26 @@ app.get('/health', (req, res) => {
   });
 });
 
+// API根路径
+app.get('/api', (req, res) => {
+  res.json({
+    success: true,
+    message: '功课收集系统API',
+    version: '1.0.0',
+    endpoints: {
+      submit: '/api/submit',
+      records: '/api/records',
+      update: '/api/update',
+      delete: '/api/delete',
+      stats: '/api/stats',
+      export: '/api/export/csv',
+      test: '/api/test'
+    },
+    timestamp: new Date().toISOString(),
+    database: 'homework_db'
+  });
+});
+
 // API测试端点
 app.get('/api/test', async (req, res) => {
   try {
@@ -100,12 +124,6 @@ app.get('/api/test', async (req, res) => {
   }
 });
 
-// 立即加载路由，避免延迟
-const routes = require('./routes');
-app.use('/api', routes); // 先注册API路由
-app.use(express.static(path.join(__dirname, '../public'))); // 后注册静态文件服务
-console.log('✅ 路由已加载');
-
 // 主页路由
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
@@ -115,6 +133,11 @@ app.get('/', (req, res) => {
 app.get('/manage', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/admin.html'));
 });
+
+// 立即加载路由，避免延迟
+const homeworkRoutes = require('./routes'); // 修改这里，使用更清晰的命名
+app.use('/api', homeworkRoutes); // 使用/api前缀
+console.log('✅ 路由已加载');
 
 // 404处理
 app.use((req, res) => {
