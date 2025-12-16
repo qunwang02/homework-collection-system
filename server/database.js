@@ -17,8 +17,8 @@ class Database {
       }
       
       // 从环境变量获取连接字符串，或使用默认值
-      const uri = process.env.MONGODB_URI || 'mongodb+srv://nanmo009:Wwx731217@cluster-fosheng.r3b5crc.mongodb.net/?appName=cluster-fosheng';
-      const dbName = process.env.DATABASE_NAME || 'donation_system';
+      const uri = process.env.MONGODB_URI || 'mongodb+srv://nanmo009@gmail:wwx731217@homework-records.7aknbpv.mongodb.net/?appName=cluster-fosheng';
+      const dbName = process.env.DATABASE_NAME || 'homework_db';
       
       console.log(`🔗 正在连接到MongoDB: ${dbName}`);
       
