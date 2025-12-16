@@ -8,6 +8,9 @@ const database = require('./database'); // 立即导入
 
 const app = express();
 
+// 或者对于Render平台，建议使用：
+app.set('trust proxy', true); // 最简单有效
+
 // 基础中间件
 	app.use(
 	  helmet({
