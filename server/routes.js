@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import database from './database.js';
+import { ObjectId } from 'mongodb';
+
 const router = express.Router();
-const database = require('./database');
-const { ObjectId } = require('mongodb');
 
 // ================== 基础健康检查路由 ==================
 
@@ -629,4 +630,4 @@ router.get('/debug/query', ensureDatabase, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
