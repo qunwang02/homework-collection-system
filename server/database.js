@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+import { MongoClient, ServerApiVersion } from 'mongodb';
 
 class HomeworkDatabase {
   constructor() {
@@ -166,4 +166,4 @@ class HomeworkDatabase {
 
 const homeworkDatabase = new HomeworkDatabase();
 
-module.exports = homeworkDatabase;
+export default homeworkDatabase;
